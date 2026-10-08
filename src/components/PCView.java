@@ -87,16 +87,43 @@ public class PCView extends JPanel {
     }
 
     private void runLocalPing() {
-        String ipAddress = JOptionPane.showInputDialog(null, "Enter IP Address for PC:");
-        // prompt the user using a JOptionPane input box so the user can interact with the simulation
-        pc.localPing(ipAddress);// Local ping for the pc to the ip address entered by the user
+        String ipAddress = JOptionPane.showInputDialog(
+                this, "Enter destination IP address:");
+
+        if (ipAddress == null) {
+            return; // User cancelled.
+        }
+
+        ipAddress = ipAddress.trim();
+
+        if (ipAddress.isEmpty()) {
+            JOptionPane.showMessageDialog(
+                    this, "Please enter an IP address.",
+                    "Missing IP address", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        pc.localPing(ipAddress);
     }
 
     private void runRemotePing() {
-        String ipAddress = JOptionPane.showInputDialog(null, "Enter IP Address for PC:");
-        // prompt the user using a JOptionPane input box so the user can interact with the simulation
+        String ipAddress = JOptionPane.showInputDialog(
+                this, "Enter destination IP address:");
+
+        if (ipAddress == null) {
+            return; // User cancelled.
+        }
+
+        ipAddress = ipAddress.trim();
+
+        if (ipAddress.isEmpty()) {
+            JOptionPane.showMessageDialog(
+                    this, "Please enter an IP address.",
+                    "Missing IP address", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
         pc.remotePing(ipAddress);
-        ;// Local ping for the pc to the ip address entered by the user
     }
 
 }
