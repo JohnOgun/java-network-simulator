@@ -119,12 +119,15 @@ public class PC {
             // Look up the arp entry for the receipient pc
             ArpEntry entry = this.arpTable.lookUpArpEntry(pcIpAddress);
 
-            // Check if we found the arp entry
+            // Stop if the destination has no entry in this PC's ARP table.
             if (entry == null) {
-                System.out.println("There is no existing arp entry for " + ipAddress);
-            } else {
-                System.out.println("Arp entry found for " + ipAddress);
+                System.out.println(
+                        "No ARP entry found for " + pcIpAddress
+                                + ". Check the destination IP address.");
+                return;
             }
+
+            System.out.println("ARP entry found for " + pcIpAddress);
 
             // Check if MAC addresses are valid
             if (this.checkMacAddress(this.getMacAddress()) && checkMacAddress(entry.getMacAddress())) {
@@ -205,6 +208,14 @@ public class PC {
         // Search for the router receipient pc is connected to
         Router receipientRouter = this.lookUpRemoteRouter(pcIpAddress);
 
+        // Stop if none of the connected routers serves this network.
+        if (receipientRouter == null) {
+            System.out.println(
+                    "No connected router found for " + pcIpAddress
+                            + ". Check the destination network.");
+            return;
+        }
+
         // Look up the arp entry for the receipient pc
         ArpEntry entry = this.arpTable.lookUpArpEntry(pcIpAddress);
 
@@ -213,6 +224,15 @@ public class PC {
             System.out.println("No arp entry found for: " + pcIpAddress);
             System.out.println("Performing ospf search");
             entry = receipientRouter.ospfSearch(pcIpAddress);
+
+            // Stop before adding an ARP entry if the route search found nothing.
+            if (entry == null) {
+                System.out.println(
+                        "No route found for " + pcIpAddress
+                                + ". Check the destination IP address.");
+                return;
+            }
+
             this.addToArpTable(entry.getIpAddress(), entry.getMacAddress());
             System.out.println("Arp entry found for " + pcIpAddress);
         } else {

@@ -186,6 +186,11 @@ public class Router {
         // Get all routing table entries
         ArrayList<RoutingTableEntry> routingTableEntries = this.switchDevice.getDeviceEntries(ipAddress);
 
+        // There is no route to choose if the destination isn't in the table.
+        if (routingTableEntries.isEmpty()) {
+            return null;
+        }
+
         RoutingTableEntry entry = routingTableEntries.get(0);
 
         // Find the entry with the least cost
