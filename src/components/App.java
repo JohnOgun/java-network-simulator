@@ -13,7 +13,7 @@ public class App extends JFrame {
         this.home = new HomeView();
 
         // Window Configuration
-        this.setSize(500, 500);
+        this.setSize(700, 500);
         this.setTitle("Java ping simulation of a network with OSPF");
         this.setVisible(true);
         // If false we won't be able to see the display of the home page with routers
