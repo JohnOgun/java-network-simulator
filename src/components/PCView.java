@@ -2,6 +2,11 @@ package components;
 
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.awt.Insets;
+import java.awt.Image;
+import java.awt.Component;
 
 import javax.swing.*;
 
@@ -17,6 +22,10 @@ public class PCView extends JPanel {
         this.parentPanel = parentPanel;
         //Assign HomeView object to the parentpanel attribute of the class
 
+        // Add padding around the screen and let the content fill the panel.
+        this.setLayout(new BorderLayout());
+        this.setBorder(BorderFactory.createEmptyBorder(24, 24, 24, 24));
+
         // Containers
         JPanel container = new JPanel();
         container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
@@ -24,7 +33,9 @@ public class PCView extends JPanel {
         JLabel heading = new JLabel(pc.getHostname());
         heading.setFont(new Font(heading.getFont().getName(), Font.BOLD, 22));
 
-        JButton backBtn = new JButton(new ImageIcon("src/images/back.png"));
+        ImageIcon backIcon = new ImageIcon("src/images/back.png");
+        JButton backBtn = new JButton("Back to network", new ImageIcon(
+                backIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH)));
 
         // action listener for the class to which will implement the action listener for the back button
         // e is an instance of the of the ActionEvent
@@ -61,16 +72,21 @@ public class PCView extends JPanel {
         JButton remotePingBtn = new JButton("Remote Ping");
         remotePingBtn.addActionListener(e -> this.runRemotePing());
 
-        JButton displayArpBtn = new JButton("Display Arp Table");
+        JButton displayArpBtn = new JButton("View ARP table");
         displayArpBtn.addActionListener(e -> {
             // this action listener is used to display the a TableView of the PC Arp Table
             TableView tableView = new TableView(this.pc.getHostname() + ": " + "ARP Table", this.pc.getArpTable(), false);
             // Creating a new tableView using this PCViews instance of PC object
         });
 
-        JPanel buttonsContainer = new JPanel(); //Creating a JPanel to store all the buttons in one container
-        buttonsContainer.setLayout(new BoxLayout(buttonsContainer, BoxLayout.X_AXIS));
-        //Assign the container layout to be a horizontal
+        // Two rows keep the buttons readable in the existing 500px window.
+        JPanel buttonsContainer = new JPanel(new GridLayout(2, 2, 10, 10));
+        buttonsContainer.setMaximumSize(new Dimension(Integer.MAX_VALUE, 110));
+        for (JButton button : new JButton[]{backBtn, localPingBtn, remotePingBtn, displayArpBtn}) {
+            button.setMargin(new Insets(10, 8, 10, 8));
+        }
+        localPingBtn.setToolTipText("Ping a PC on the same network");
+        remotePingBtn.setToolTipText("Ping a PC on the other network");
 
         //Add all the buttons to the button container
         buttonsContainer.add(backBtn);
@@ -79,8 +95,17 @@ public class PCView extends JPanel {
         buttonsContainer.add(displayArpBtn);
 
 
+        container.add(Box.createVerticalStrut(12));
         container.add(buttonsContainer);// add the button container to the overall container/JPanel
-        this.add(container);// add the overall container to this instance of the PCView class
+        container.add(Box.createVerticalStrut(14));
+        container.add(Box.createVerticalGlue());
+        // Align the heading, details and buttons along the same left edge.
+        for (Component component : container.getComponents()) {
+            if (component instanceof JComponent) {
+                ((JComponent) component).setAlignmentX(Component.LEFT_ALIGNMENT);
+            }
+        }
+        this.add(container, BorderLayout.CENTER);// add the overall container to this instance of the PCView class
 
         this.setVisible(true);
         //Make this view visible in the window

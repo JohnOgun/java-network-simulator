@@ -29,13 +29,18 @@ public class HomeView extends JPanel {
         this.router2Btn = new JButton();
         this.router2Btn.setIcon(new ImageIcon("src/images/router.png"));
 
+        // Show which network each button opens.
+        this.router1Btn.setText(this.seed.getRouter1().getHostname());
+        this.router2Btn.setText(this.seed.getRouter2().getHostname());
+        for (JButton button : new JButton[]{router1Btn, router2Btn}) {
+            button.setHorizontalTextPosition(SwingConstants.CENTER);
+            button.setVerticalTextPosition(SwingConstants.BOTTOM);
+            button.setIconTextGap(10);
+            button.setMargin(new Insets(12, 12, 12, 12));
+        }
+
         JLabel heading = new JLabel();// Setting of the label for the HomeView
-        heading.setText("<html><body style=\"text-align: center\">Java Simulation of OSPf using<br>a network of pc's, routers & switches</body></html>");
-        // the <html> is used the wrap the title in the form of HTML
-        //<body style="text-align: center"> is used to store the text and also is used to center the text of the title
-        //style="text-align: center" is from CSS
-        //<br> is used to display the other part of the string as without it will be cut off as it means a new line
-        // </body></html> is used to show the end of the heading text
+        heading.setText("Java Network Simulator");
         Font defFont = heading.getFont();
         // Used to get the default font for this simulation
         heading.setFont(new Font(defFont.getName(), Font.BOLD, 22));
@@ -62,12 +67,14 @@ public class HomeView extends JPanel {
         router1container.setLayout(new BoxLayout(router1container, BoxLayout.Y_AXIS));
         router1container.add(new JLabel("Router 1"));//adding a label to the router container
         router1container.add(this.router1Btn);
+        this.router1Btn.setToolTipText("Open Johns Network");
         // add to the container the router1 button for this instance of the home view
 
         JPanel router2container = new JPanel();
         router2container.setLayout(new BoxLayout(router2container, BoxLayout.Y_AXIS));
         router2container.add(new JLabel("Router 2"));
         router2container.add(this.router2Btn);
+        this.router2Btn.setToolTipText("Open Peters Network");
 
         JPanel routersContainer = new JPanel();
         // Overall container for the routers which will hold both router components
@@ -85,7 +92,7 @@ public class HomeView extends JPanel {
         overallContainer.setLayout(new BoxLayout(overallContainer, BoxLayout.Y_AXIS));
         overallContainer.add(headingContainer);
         // invisible spacer
-        overallContainer.add(Box.createRigidArea(new Dimension(5, 20)));
+        overallContainer.add(Box.createRigidArea(new Dimension(5, 30)));
         overallContainer.add(routersContainer);
 
         // Create empty space between the component and every element on top or below

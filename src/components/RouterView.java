@@ -3,6 +3,10 @@ package components;
 import java.awt.Dimension;
 import java.util.ArrayList;
 
+import java.awt.Component;
+import java.awt.Image;
+import java.awt.Insets;
+
 import javax.swing.*;
 
 import lib.PC;
@@ -34,7 +38,11 @@ public class RouterView extends JPanel {
         JPanel routersContainer = new JPanel();
         routersContainer.setLayout(new BoxLayout(routersContainer, BoxLayout.X_AXIS));
 
-        JButton backBtn = new JButton(new ImageIcon("src/images/back.png"));  // Back button with a icon
+        ImageIcon backIcon = new ImageIcon("src/images/back.png");
+        JButton backBtn = new JButton("Back to networks", new ImageIcon(
+                backIcon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH)));
+        backBtn.setMargin(new Insets(10, 8, 10, 8)); // Back button with a icon
+
         backBtn.addActionListener(e -> this.parentPanel.getController().showFrame("home"));  // Action listener to go back to HomeView
 
 
@@ -84,6 +92,13 @@ public class RouterView extends JPanel {
         container.add(Box.createRigidArea(new Dimension(5, 20)));  // SPACE FOR THE COMPONENT OBJECTS IN THE CONTAINER
         container.add(displayRouterTableBtn);  // Add the display button to the container
 
+        // Centre the details and buttons above and below the devices.
+        for (Component component : container.getComponents()) {
+            if (component instanceof JComponent) {
+                ((JComponent) component).setAlignmentX(Component.CENTER_ALIGNMENT);
+            }
+        }
+
         this.add(container);  // Add the main container to this panel
 
         this.setVisible(true);  // Make this panel visible
@@ -105,6 +120,13 @@ public class RouterView extends JPanel {
         this.parentPanel.add(new PCView(device, this.parentPanel), frameName);  // Add new pc view to home frame
         this.pcDeviceBtns.add(btn);  // Add button to the list
         container.add(btn);  // Add button to the device container
+
+        // Centre the PC name above its button.
+        for (Component component : container.getComponents()) {
+            if (component instanceof JComponent) {
+                ((JComponent) component).setAlignmentX(Component.CENTER_ALIGNMENT);
+            }
+        }
 
         return container;  // Return the container
     }
