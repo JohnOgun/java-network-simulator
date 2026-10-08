@@ -60,7 +60,47 @@ public class PC {
         // full address
     }
 
+    // Checks the address format, not whether a PC exists at that address.
+    public static boolean isValidIpAddress(String ipAddress) {
+        if (ipAddress == null) {
+            return false;
+        }
+
+        // Keep empty parts so something like "192.11.9." is rejected.
+        String[] parts = ipAddress.split("\\.", -1);
+
+        if (parts.length != 4) {
+            return false;
+        }
+
+        for (String part : parts) {
+            // Each part needs 1–3 digits. No letters, spaces or minus signs.
+            if (!part.matches("[0-9]{1,3}")) {
+                return false;
+            }
+
+            // Safe to convert now that the format has been checked.
+            int value = Integer.parseInt(part);
+
+            if (value > 255) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+
     public void localPing(String pcIpAddress) {
+
+        // Stop before checking the network if the address is invalid.
+        if (!isValidIpAddress(pcIpAddress)) {
+            System.out.println(
+                    "The IP address you entered (" + pcIpAddress + ") is invalid. "
+                            + "Use this format: 192.11.9.3.\n");
+            return;
+        }
+
         String[] ipParts1 = PC.splitIpAddress(this.getIpAddress());// store the seprated parts in an array for a ipPart1
         String[] ipParts2 = PC.splitIpAddress(pcIpAddress); // store the seprated parts in an array for a ipPart2
 
@@ -139,6 +179,22 @@ public class PC {
     }
 
     public void remotePing(String pcIpAddress) {
+
+        if (!isValidIpAddress(pcIpAddress)) {
+            System.out.println(
+                    "The IP address you entered (" + pcIpAddress + ") is invalid. "
+                            + "Use this format: 192.11.9.3.\n");
+            return;
+        }
+
+        // A destination on this network should use Local Ping instead.
+        if (checkParts(splitIpAddress(this.getIpAddress()),
+                splitIpAddress(pcIpAddress))) {
+            System.out.println(
+                    "\n This address is on the same network. Use Local Ping instead.");
+            return;
+        }
+
         double sumRTT = 0;
         double minRTT = Double.MAX_VALUE;
         double maxRTT = Double.MIN_VALUE;

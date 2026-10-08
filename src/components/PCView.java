@@ -90,12 +90,15 @@ public class PCView extends JPanel {
         String ipAddress = JOptionPane.showInputDialog(
                 this, "Enter destination IP address:");
 
+        // Cancel returns null, so stop before calling the ping method.
         if (ipAddress == null) {
-            return; // User cancelled.
+            return;
         }
 
+        // Allow spaces around the address when typing or pasting.
         ipAddress = ipAddress.trim();
 
+        // Reject empty input, including input containing only spaces.
         if (ipAddress.isEmpty()) {
             JOptionPane.showMessageDialog(
                     this, "Please enter an IP address.",
@@ -103,6 +106,7 @@ public class PCView extends JPanel {
             return;
         }
 
+        // Pass the address to the PC's local ping simulation.
         pc.localPing(ipAddress);
     }
 
@@ -110,12 +114,15 @@ public class PCView extends JPanel {
         String ipAddress = JOptionPane.showInputDialog(
                 this, "Enter destination IP address:");
 
+        // Cancel returns null, so stop before calling the ping method.
         if (ipAddress == null) {
-            return; // User cancelled.
+            return;
         }
 
+        // Allow spaces around the address when typing or pasting.
         ipAddress = ipAddress.trim();
 
+        // Reject empty input, including input containing only spaces.
         if (ipAddress.isEmpty()) {
             JOptionPane.showMessageDialog(
                     this, "Please enter an IP address.",
@@ -123,7 +130,7 @@ public class PCView extends JPanel {
             return;
         }
 
+        // Pass the address to the PC's remote ping simulation.
         pc.remotePing(ipAddress);
     }
-
 }
