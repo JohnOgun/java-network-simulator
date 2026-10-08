@@ -1,6 +1,6 @@
 # Java Network Simulator
 
-I built this project during the final year of my Electronic Engineering degree in 2023/24. The aim was to demonstrate how PCs, routers and switches interact in a small network, using Java and a Swing interface.
+I built this project during the final year of my Software Engineering degree in 2023/24. The aim was to demonstrate how PCs, routers and switches interact in a small network, using Java and a Swing interface.
 
 I revisited it in 2026 to get it running again. Since then, I’ve improved input handling, fixed some missing-destination errors and tidied the home, PC and router screens.
 
